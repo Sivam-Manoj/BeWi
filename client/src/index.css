@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --vertical-menu-width: 80px; /* Default collapsed width */
+}
+
+.vertical-menu-expanded {
+  --vertical-menu-width: 250px; /* Expanded width */
+}
+
+.vertical-menu {
+  width: var(--vertical-menu-width);
+  transition: width 0.3s ease; /* Smooth transition for width changes */
+}

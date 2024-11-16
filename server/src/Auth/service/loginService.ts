@@ -1,0 +1,24 @@
+import { AsyncError } from "biezor";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  sendTokensAsCookies,
+} from "../../Utils/token/createTokens";
+import Auth, { IAuth } from "../Model/AuthModel";
+
+export const loginService = async (email: string, password: string) => {
+  const user = (await Auth.findOne({ email })) as IAuth | null;
+
+  if (!user) {
+    throw new AsyncError("Invalid credentials");
+  }
+  const isPasswordCorrect = await user.comparePassword(password);
+  console.log("Password comparison result:", isPasswordCorrect); // Log the result
+
+  if (!(await user.comparePassword(password))) {
+    throw new AsyncError("Invalid credentials");
+  }
+
+  const userId = user._id;
+  return { userId };
+};
