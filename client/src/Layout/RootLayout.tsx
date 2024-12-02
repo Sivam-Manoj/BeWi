@@ -16,7 +16,7 @@ const RootLayout = () => {
         </div>
 
         {/* Content Below Horizontal Menu */}
-        <div className="flex-grow pt-16 p-4">
+        <div className="flex-grow pt-16 p-4 mt-4">
           <Outlet />
         </div>
       </div>

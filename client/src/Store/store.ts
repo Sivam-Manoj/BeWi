@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import apiSlice from "./api/apiSlice"; // Path to your API slice file
 import toggleSlice from "./slices/state/navbar/toggleSlice";
-
+import authSLice from "./slices/auth/auth";
 const store = configureStore({
   reducer: {
+    auth: authSLice,
     [apiSlice.reducerPath]: apiSlice.reducer, // Add the API slice reducer
     toggle: toggleSlice,
   },

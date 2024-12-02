@@ -21,8 +21,10 @@ import {
   Brightness7,
   Notifications,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/store";
+import ProfileModal from "./modal/ProfileModal";
+import { logout } from "../../Store/slices/auth/auth";
 
 const HorizontalMenu: React.FC = () => {
   const [theme, setTheme] = useState<boolean>(false); // Light/Dark Theme state
@@ -31,8 +33,9 @@ const HorizontalMenu: React.FC = () => {
   const [openNotificationModal, setOpenNotificationModal] = useState(false); // Notification Modal state
   const open = Boolean(anchorEl);
   const isToggle = useSelector((state: RootState) => state.toggle.isToggle);
+  const dispatch = useDispatch();
 
-  console.log(isToggle);
+  // Handle Theme change
   const handleThemeChange = () => {
     setTheme(!theme);
     if (theme) {
@@ -52,9 +55,16 @@ const HorizontalMenu: React.FC = () => {
     setAnchorEl(null);
   };
 
+  // Handle Logout
+  const handleLogout = () => {
+    dispatch(logout());
+    handleClose(); // Close menu after logout
+  };
+
   // Open Profile Modal
   const handleOpenProfile = () => {
     setOpenProfileModal(true);
+    handleClose();
   };
 
   // Close Profile Modal
@@ -93,11 +103,12 @@ const HorizontalMenu: React.FC = () => {
       <AppBar
         position="fixed"
         sx={{
-          top: 0,
+          top: 5,
           left: isToggle ? 200 : 80,
           right: 0,
-          width: isToggle ? "85%" : "93%",
+          width: isToggle ? "83%" : "91%",
           backgroundColor: "#f5f5f5", // Light background color
+          borderRadius: 3,
         }}
         className="shadow-md"
       >
@@ -151,7 +162,7 @@ const HorizontalMenu: React.FC = () => {
               }}
             >
               <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -177,54 +188,17 @@ const HorizontalMenu: React.FC = () => {
           }}
         >
           <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </div>
 
       {/* Profile Modal */}
-      <Modal
+      <ProfileModal
         open={openProfileModal}
         onClose={handleCloseProfile}
         aria-labelledby="user-profile-modal"
         aria-describedby="user-profile-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            padding: "2rem",
-            boxShadow: 24,
-            borderRadius: 2,
-            width: 300,
-          }}
-        >
-          <Typography
-            id="user-profile-modal"
-            variant="h6"
-            className="text-center"
-          >
-            User Profile
-          </Typography>
-          <Typography id="user-profile-modal-description" sx={{ mt: 2 }}>
-            Name: John Doe
-          </Typography>
-          <Typography id="user-profile-modal-description" sx={{ mt: 1 }}>
-            Email: johndoe@example.com
-          </Typography>
-          <div className="mt-4 flex justify-center">
-            <Button
-              onClick={handleCloseProfile}
-              variant="contained"
-              color="primary"
-            >
-              Close
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+      />
 
       {/* Notification Modal */}
       <Modal

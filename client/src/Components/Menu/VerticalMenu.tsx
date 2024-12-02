@@ -26,7 +26,7 @@ const VerticalNavbar: React.FC = () => {
 
   // Separate main menu items and settings item
   const mainMenuItems = menuItems.filter((item) => item.label !== "Settings");
-  const settingsItem = menuItems.find((item) => item.label === "Settings");
+  //const settingsItem = menuItems.find((item) => item.label === "Settings");
 
   // Animation for menu items
   const trail = useTrail(mainMenuItems.length, {
@@ -88,24 +88,12 @@ const VerticalNavbar: React.FC = () => {
               <MenuItem
                 icon={mainMenuItems[index].icon}
                 label={mainMenuItems[index].label}
-                isExpanded={isExpanded || isMobile} // Adjust item visibility
+                isExpanded={isExpanded || isMobile}
                 to={mainMenuItems[index].to}
               />
             </animated.div>
           ))}
         </List>
-
-        {/* Settings Menu Item */}
-        {settingsItem && (
-          <div className="mt-auto mb-2">
-            <MenuItem
-              icon={settingsItem.icon}
-              label={settingsItem.label}
-              isExpanded={isExpanded || isMobile} // Adjust item visibility
-              to={settingsItem.to}
-            />
-          </div>
-        )}
       </Drawer>
     </>
   );

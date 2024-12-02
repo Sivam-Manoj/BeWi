@@ -6,7 +6,7 @@ export const ConnectServerWithDb = async (app: Express) => {
     await connect(mongo_url);
     console.log("database connected successfully");
     app.listen(port, () => {
-      console.log("Server running succesfully");
+      console.log(`server running on: http://localhost:3000`);
     });
   } catch {
     console.log("Error connecting to MongoDB");

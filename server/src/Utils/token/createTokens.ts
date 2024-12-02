@@ -2,24 +2,42 @@ import jwt from "jsonwebtoken";
 import { config } from "../../Config/config";
 import { Response } from "express";
 
-// Function to generate access token
-export const generateAccessToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, config.jwt.accessSecret, {
+// Function to generate access token with user data
+export const generateAccessToken = (
+  userId: string,
+  name: string,
+  email: string,
+  role: string
+): string => {
+  const payload = { userId, name, email, role }; // Add user info to the payload
+  return jwt.sign(payload, config.jwt.accessSecret, {
     expiresIn: config.jwt.accessExpiresIn,
   });
 };
 
-// Function to generate refresh token
-export const generateRefreshToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, config.jwt.refreshSecret, {
+// Function to generate refresh token with user data
+export const generateRefreshToken = (
+  userId: string,
+  name: string,
+  email: string,
+  role: string
+): string => {
+  const payload = { userId, name, email, role }; // Add user info to the payload
+  return jwt.sign(payload, config.jwt.refreshSecret, {
     expiresIn: config.jwt.refreshExpiresIn,
   });
 };
 
 // Function to send JWT tokens as cookies
-export const sendTokensAsCookies = (res: Response, userId: string) => {
-  const accessToken = generateAccessToken(userId);
-  const refreshToken = generateRefreshToken(userId);
+export const sendTokensAsCookies = (
+  res: Response,
+  userId: string,
+  name: string,
+  email: string,
+  role: string
+) => {
+  const accessToken = generateAccessToken(userId, name, email, role);
+  const refreshToken = generateRefreshToken(userId, name, email, role);
 
   // Send the access token as a cookie
   res.cookie("access_token", accessToken, {
@@ -36,14 +54,6 @@ export const sendTokensAsCookies = (res: Response, userId: string) => {
     sameSite: "strict", // Prevent CSRF attacks
     maxAge: 24 * 60 * 60 * 1000, // Max age in milliseconds
   });
-};
 
-// Function to verify access token
-export const verifyAccessToken = (token: string) => {
-  return jwt.verify(token, config.jwt.accessSecret);
-};
-
-// Function to verify refresh token
-export const verifyRefreshToken = (token: string) => {
-  return jwt.verify(token, config.jwt.refreshSecret);
+  return { accessToken }; // Return the access token as a response object
 };

@@ -1,10 +1,12 @@
-
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import BarChart from "./Charts/BarChart";
 import PieChart from "./Charts/Piechart";
 import OrdersTable from "./table/OrdersTable";
-import { Card, CardContent, Typography,  } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 const Dashboard = () => {
+  useAuthRedirect();
+  
   return (
     <div className="p-6">
       {/* Wrap the entire page content inside one Card */}
